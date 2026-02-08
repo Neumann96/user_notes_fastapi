@@ -21,10 +21,10 @@ async def register_user(
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    user = await create_user(
+    user_router = await create_user(
         db,
         email=data.email,
         hashed_password=data.password,
     )
     
-    return user
+    return user_router

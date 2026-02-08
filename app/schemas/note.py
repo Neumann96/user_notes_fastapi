@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class NoteCreate(BaseModel):
@@ -12,5 +13,11 @@ class NoteRead(BaseModel):
     content: str
     owner_id: int
     
-    class Config(BaseModel):
-        from_attributes = True
+    model_config = {
+        "from_attributes": True  
+    }
+        
+        
+class NoteUpdate(BaseModel):
+    title: Optional[str]
+    content: Optional[str]

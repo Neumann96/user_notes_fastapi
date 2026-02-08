@@ -10,5 +10,6 @@ class UserRead(BaseModel):
     id: int
     email: EmailStr
     
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True  
+    }
