@@ -7,7 +7,10 @@ class User(Base):
     __tablename__ = "users"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String, unique=True, index=True)
-    hashed_password: Mapped[str]
+    email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
     
-    notes = relationship("Note", back_populates="owner")
+    notes = relationship("Note", 
+                         back_populates="owner", 
+                         cascade="all, delete-orphan",
+                        )

@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.user import UserCreate, UserRead
 from app.db.session import new_session
 from app.db.crud.user import get_user_by_email, create_user
+from app.core.security import hash_password
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -21,10 +22,11 @@ async def register_user(
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
     
+    hashed_password = hash_password(data.password)
     user_router = await create_user(
         db,
         email=data.email,
-        hashed_password=data.password,
+        hashed_password=hashed_password,
     )
     
     return user_router
