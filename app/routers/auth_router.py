@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import new_session
 from app.db.crud.user import get_user_by_email, create_user
 from app.core.security import hash_password, verify_password, create_access_token
+from app.schemas.auth import RegisterBody
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -16,18 +17,17 @@ async def get_db():
         
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(
-    data: dict,
+    data: RegisterBody,
     db: AsyncSession = Depends(get_db),
 ):
-    email = data.get("email")
-    password = data.get("password")
-    if not email or not password:
-        raise HTTPException(status_code=400, detail="email and password required")
+    email = str(data.email)
+    password = data.password
     
     existing = await get_user_by_email(db, email)
     if existing:
         raise HTTPException(status_code=409, detail="Email already registered")
-    
+    pw_bytes = password.encode("utf-8")
+    print("pw chars:", len(password), "pw bytes:", len(pw_bytes))
     user = await create_user(
         db,
         email=email,

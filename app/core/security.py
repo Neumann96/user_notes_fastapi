@@ -6,7 +6,10 @@ import os
 
 load_dotenv()
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["pbkdf2_sha256"],
+    deprecated="auto",
+)
 
 ALGORITHM = "HS256"
 SECRET_KEY = os.getenv("SECRET_KEY")
