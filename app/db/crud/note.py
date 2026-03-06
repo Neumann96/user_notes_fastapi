@@ -23,3 +23,10 @@ async def get_note(db: AsyncSession, note_id: int, owner_id: int):
         select(Note).where(Note.id == note_id, Note.owner_id == owner_id)
     )
     return result.scalar_one_or_none()
+
+
+async def get_note_by_id(db:AsyncSession, note_id: int, user_id: int):
+    result = await db.execute(
+        select(Note).where(Note.id == note_id, Note.owner_id == user_id)
+    )
+    return result.scalar_one_or_none()

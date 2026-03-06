@@ -21,3 +21,14 @@ class NoteRead(BaseModel):
 class NoteUpdate(BaseModel):
     title: Optional[str]
     content: Optional[str]
+    
+    
+class NoteResponse(BaseModel):
+    id: int
+    title: str
+    content: str
+    owner_id: int
+    
+    model_config = {
+        "from_attributes": True
+    }
